@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +24,7 @@ import com.transunion.homework.persistence.entity.Employee;
 import com.transunion.homework.persistence.repository.EmployeeRepository;
 
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping
 public class TransUnionEmployeeController {
@@ -30,7 +33,7 @@ public class TransUnionEmployeeController {
 	@Autowired
 	EmployeeRepository repository;
 
-	@GetMapping(value = "/employee", produces = { "application/json" })
+	@GetMapping(value = "/api/employee", produces = { "application/json" })
 	public ResponseEntity<List<Employee>> findEmployee(@RequestParam(required = false) Integer age,
 			@RequestParam(required = false) String title) {
 		
@@ -70,7 +73,7 @@ public class TransUnionEmployeeController {
 		}
 	}
 
-	  @PostMapping(value = "/employee", produces = { "application/json" })
+	  @PostMapping(value = "/api/employee", produces = { "application/json" })
 	  public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
 	    LOGGER.info("Processing POST url: /employee; payload: {}", employee);
 		if (employee.getAddress() == null || employee.getDateOfBirth() == null || employee.getName() == null
@@ -89,6 +92,11 @@ public class TransUnionEmployeeController {
 		} catch (Throwable t) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	  }
+	  
+	  @DeleteMapping(value = "/api/employee", produces = { "application/json" })
+	  public ResponseEntity<Employee> Employee(@RequestBody Employee employee) {
+		  return new ResponseEntity<>(HttpStatus.OK);
 	  }
 
 }
